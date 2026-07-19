@@ -1,2 +1,19 @@
-./__pycache__
-./my_venv/
+# secrets
+.env
+
+# python
+__pycache__/
+*/__pycache__/
+**/__pycache__/
+*.pyc
+
+# virtual env
+my_venv/
+venv/
+
+# LangGraph checkpoint db
+checkpoints.sqlite
+
+# IDE
+.vscode/
+.idea/
