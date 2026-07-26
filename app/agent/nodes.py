@@ -15,6 +15,7 @@ from app.github_client import (
     get_compare_diff,
     get_committer_email,
 )
+from app.Service.email_server import send_email
 
 
 async def fetch_diff(state: dict) -> dict:
@@ -125,10 +126,12 @@ async def notify_email(state: dict) -> dict:
         f"{state['pr_url']}\n\nChangelog:\n{state['changelog']}\n"
     )
 
-    async with httpx.AsyncClient() as client:
-        await client.post(
-            f"{settings.EMAIL_MCP_URL}/send-email",
-            json={"to": state["committer_email"], "subject": subject, "body": body},
-            timeout=10.0,
-        )
+    message = send_email(state["committer_email"], subject, body)
+    
+    # async with httpx.AsyncClient() as client:
+    #     await client.post(
+    #         f"{settings.EMAIL_MCP_URL}/send-email",
+    #         json={"to": state["committer_email"], "subject": subject, "body": body},
+    #         timeout=10.0,
+    #     )
     return {}

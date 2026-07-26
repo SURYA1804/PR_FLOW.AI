@@ -8,26 +8,23 @@ Run with: uvicorn app.mcp.email_server:app --port 8100
 import smtplib
 from email.mime.text import MIMEText
 
-from fastapi import FastAPI
 from pydantic import BaseModel
 
 from app.config import settings
 
-app = FastAPI(title="Email notification service")
 
 
-class EmailRequest(BaseModel):
-    to: str
-    subject: str
-    body: str
+# class EmailRequest(BaseModel):
+#     to: str
+#     subject: str
+#     body: str
 
 
-@app.post("/send-email")
-async def send_email(req: EmailRequest):
-    msg = MIMEText(req.body)
-    msg["Subject"] = req.subject
+async def send_email(to: str, subject: str, body: str):
+    msg = MIMEText(body)
+    msg["Subject"] = subject
     msg["From"] = settings.SMTP_USER
-    msg["To"] = req.to
+    msg["To"] = to
 
     with smtplib.SMTP(settings.SMTP_HOST, settings.SMTP_PORT) as server:
         server.starttls()
@@ -37,6 +34,4 @@ async def send_email(req: EmailRequest):
     return {"status": "sent", "to": req.to}
 
 
-@app.get("/healthz")
-async def healthz():
-    return {"status": "ok"}
+
