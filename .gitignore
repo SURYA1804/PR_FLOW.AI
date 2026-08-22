@@ -2,14 +2,13 @@
 .env
 
 # python
-__pycache__/
+app/__pycache__/
 */__pycache__/
 **/__pycache__/
 *.pyc
 
 # virtual env
 my_venv/
-venv/
 
 # LangGraph checkpoint db
 checkpoints.sqlite
@@ -17,3 +16,5 @@ checkpoints.sqlite
 # IDE
 .vscode/
 .idea/
+
+*.pem

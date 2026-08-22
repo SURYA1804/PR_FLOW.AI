@@ -1,0 +1,441 @@
+2026-08-16 16:44:16,118 | INFO     | app.agent.graph | graph: workflow built with 6 nodes
+2026-08-16 16:45:22,129 | INFO     | app.agent.graph | graph: workflow built with 6 nodes
+2026-08-16 16:47:02,003 | INFO     | app.agent.graph | graph: workflow built with 6 nodes
+2026-08-16 16:57:13,837 | INFO     | app.main | webhook received | event=installation delivery=6d37dc00-9965-11f1-95af-0f7a689c21f8
+2026-08-16 16:57:13,841 | INFO     | app.main | ignored event type | event=installation delivery=6d37dc00-9965-11f1-95af-0f7a689c21f8
+2026-08-16 17:01:02,938 | INFO     | app.main | webhook received | event=installation_repositories delivery=f5df8850-9965-11f1-9bb1-53175bbbc3cf
+2026-08-16 17:01:02,939 | INFO     | app.main | ignored event type | event=installation_repositories delivery=f5df8850-9965-11f1-9bb1-53175bbbc3cf
+2026-08-16 17:09:14,162 | INFO     | app.main | webhook received | event=installation delivery=1aa66630-9967-11f1-9d11-5a7220ff1116
+2026-08-16 17:09:14,163 | INFO     | app.main | ignored event type | event=installation delivery=1aa66630-9967-11f1-9d11-5a7220ff1116
+2026-08-16 17:09:59,656 | INFO     | app.main | webhook received | event=push delivery=2d6a48ae-9967-11f1-8088-f5d8f095955d
+2026-08-16 17:09:59,657 | INFO     | app.main | [push] starting agent run | repo=SURYA1804/GH--600 delivery=2d6a48ae-9967-11f1-8088-f5d8f095955d
+2026-08-16 17:09:59,657 | INFO     | app.agent.graph | run_push_event: SURYA1804/GH--600 branch=main sha=145d1ec
+2026-08-16 17:09:59,693 | INFO     | app.agent.graph | run_push_event: invoking graph, thread_id=pr-SURYA1804-GH--600-145d1ec848993753faff005efc37778b6443739a
+2026-08-16 17:09:59,717 | INFO     | app.agent.nodes | fetch_diff: fetching SURYA1804/GH--600 main...145d1ec
+2026-08-16 17:09:59,717 | INFO     | app.github_client | get_compare_diff: SURYA1804/GH--600 main...145d1ec848993753faff005efc37778b6443739a
+2026-08-16 17:09:59,719 | ERROR    | app.agent.nodes | fetch_diff: get_compare_diff failed
+Traceback (most recent call last):
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\jwt\algorithms.py", line 343, in prepare_key
+    RSAPrivateKey, load_pem_private_key(key_bytes, password=None)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: ('Could not deserialize key data. The data may be in an incorrect format, the provided password may be incorrect, it may be encrypted with an unsupported algorithm, or it may be an unsupported key type (e.g. EC curves with explicit parameters).', [<OpenSSLError(code=503841036, lib=60, reason=524556, reason_text=unsupported)>])
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\jwt\algorithms.py", line 347, in prepare_key
+    return cast(RSAPublicKey, load_pem_public_key(key_bytes))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: Valid PEM but no BEGIN PUBLIC KEY/END PUBLIC KEY delimiters. Are you sure this is a public key?
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\app\agent\nodes.py", line 32, in fetch_diff
+    compare = await get_compare_diff(
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\app\github_client.py", line 26, in get_compare_diff
+    token = await get_installation_token(installation_id)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\app\github_auth.py", line 32, in get_installation_token
+    app_jwt = _generate_app_jwt()
+              ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\app\github_auth.py", line 24, in _generate_app_jwt
+    return jwt.encode(payload, settings.GITHUB_PRIVATE_KEY, algorithm="RS256")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\jwt\api_jwt.py", line 74, in encode
+    return api_jws.encode(
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\jwt\api_jws.py", line 161, in encode
+    key = alg_obj.prepare_key(key)
+          ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\jwt\algorithms.py", line 349, in prepare_key
+    raise InvalidKeyError("Could not parse the provided public key.")
+jwt.exceptions.InvalidKeyError: Could not parse the provided public key.
+2026-08-16 17:09:59,881 | ERROR    | app.agent.graph | run_push_event: graph invocation failed for SURYA1804/GH--600 sha=145d1ec
+Traceback (most recent call last):
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\jwt\algorithms.py", line 343, in prepare_key
+    RSAPrivateKey, load_pem_private_key(key_bytes, password=None)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: ('Could not deserialize key data. The data may be in an incorrect format, the provided password may be incorrect, it may be encrypted with an unsupported algorithm, or it may be an unsupported key type (e.g. EC curves with explicit parameters).', [<OpenSSLError(code=503841036, lib=60, reason=524556, reason_text=unsupported)>])
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\jwt\algorithms.py", line 347, in prepare_key
+    return cast(RSAPublicKey, load_pem_public_key(key_bytes))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: Valid PEM but no BEGIN PUBLIC KEY/END PUBLIC KEY delimiters. Are you sure this is a public key?
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\app\agent\graph.py", line 120, in run_push_event
+    await compiled.ainvoke(initial_state, config=config)
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langgraph\pregel\__init__.py", line 1613, in ainvoke
+    async for chunk in self.astream(
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langgraph\pregel\__init__.py", line 1502, in astream
+    async for _ in runner.atick(
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langgraph\pregel\runner.py", line 130, in atick
+    await arun_with_retry(t, retry_policy, stream=self.use_astream)
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langgraph\pregel\retry.py", line 102, in arun_with_retry
+    await task.proc.ainvoke(task.input, config)
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langgraph\utils\runnable.py", line 452, in ainvoke
+    input = await asyncio.create_task(coro, context=context)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langgraph\utils\runnable.py", line 235, in ainvoke
+    ret = await asyncio.create_task(coro, context=context)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\app\agent\nodes.py", line 32, in fetch_diff
+    compare = await get_compare_diff(
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\app\github_client.py", line 26, in get_compare_diff
+    token = await get_installation_token(installation_id)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\app\github_auth.py", line 32, in get_installation_token
+    app_jwt = _generate_app_jwt()
+              ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\app\github_auth.py", line 24, in _generate_app_jwt
+    return jwt.encode(payload, settings.GITHUB_PRIVATE_KEY, algorithm="RS256")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\jwt\api_jwt.py", line 74, in encode
+    return api_jws.encode(
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\jwt\api_jws.py", line 161, in encode
+    key = alg_obj.prepare_key(key)
+          ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\jwt\algorithms.py", line 349, in prepare_key
+    raise InvalidKeyError("Could not parse the provided public key.")
+jwt.exceptions.InvalidKeyError: Could not parse the provided public key.
+2026-08-16 17:09:59,942 | ERROR    | app.main | [push] agent run FAILED | repo=SURYA1804/GH--600 delivery=2d6a48ae-9967-11f1-8088-f5d8f095955d
+Traceback (most recent call last):
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\jwt\algorithms.py", line 343, in prepare_key
+    RSAPrivateKey, load_pem_private_key(key_bytes, password=None)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: ('Could not deserialize key data. The data may be in an incorrect format, the provided password may be incorrect, it may be encrypted with an unsupported algorithm, or it may be an unsupported key type (e.g. EC curves with explicit parameters).', [<OpenSSLError(code=503841036, lib=60, reason=524556, reason_text=unsupported)>])
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\jwt\algorithms.py", line 347, in prepare_key
+    return cast(RSAPublicKey, load_pem_public_key(key_bytes))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: Valid PEM but no BEGIN PUBLIC KEY/END PUBLIC KEY delimiters. Are you sure this is a public key?
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\app\main.py", line 40, in _run_push_event_logged
+    await run_push_event(graph, payload)
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\app\agent\graph.py", line 120, in run_push_event
+    await compiled.ainvoke(initial_state, config=config)
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langgraph\pregel\__init__.py", line 1613, in ainvoke
+    async for chunk in self.astream(
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langgraph\pregel\__init__.py", line 1502, in astream
+    async for _ in runner.atick(
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langgraph\pregel\runner.py", line 130, in atick
+    await arun_with_retry(t, retry_policy, stream=self.use_astream)
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langgraph\pregel\retry.py", line 102, in arun_with_retry
+    await task.proc.ainvoke(task.input, config)
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langgraph\utils\runnable.py", line 452, in ainvoke
+    input = await asyncio.create_task(coro, context=context)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langgraph\utils\runnable.py", line 235, in ainvoke
+    ret = await asyncio.create_task(coro, context=context)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\app\agent\nodes.py", line 32, in fetch_diff
+    compare = await get_compare_diff(
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\app\github_client.py", line 26, in get_compare_diff
+    token = await get_installation_token(installation_id)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\app\github_auth.py", line 32, in get_installation_token
+    app_jwt = _generate_app_jwt()
+              ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\app\github_auth.py", line 24, in _generate_app_jwt
+    return jwt.encode(payload, settings.GITHUB_PRIVATE_KEY, algorithm="RS256")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\jwt\api_jwt.py", line 74, in encode
+    return api_jws.encode(
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\jwt\api_jws.py", line 161, in encode
+    key = alg_obj.prepare_key(key)
+          ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\jwt\algorithms.py", line 349, in prepare_key
+    raise InvalidKeyError("Could not parse the provided public key.")
+jwt.exceptions.InvalidKeyError: Could not parse the provided public key.
+2026-08-16 19:15:21,208 | INFO     | app.agent.graph | graph: workflow built with 6 nodes
+2026-08-16 19:15:54,882 | INFO     | app.main | webhook received | event=push delivery=2d6a48ae-9967-11f1-8088-f5d8f095955d
+2026-08-16 19:15:54,884 | INFO     | app.main | [push] starting agent run | repo=SURYA1804/GH--600 delivery=2d6a48ae-9967-11f1-8088-f5d8f095955d
+2026-08-16 19:15:54,884 | INFO     | app.agent.graph | run_push_event: SURYA1804/GH--600 branch=main sha=145d1ec
+2026-08-16 19:15:54,890 | INFO     | app.agent.graph | run_push_event: invoking graph, thread_id=pr-SURYA1804-GH--600-145d1ec848993753faff005efc37778b6443739a
+2026-08-16 19:15:54,901 | INFO     | app.agent.nodes | fetch_diff: fetching SURYA1804/GH--600 main...145d1ec
+2026-08-16 19:15:54,902 | INFO     | app.github_client | get_compare_diff: SURYA1804/GH--600 main...145d1ec848993753faff005efc37778b6443739a
+2026-08-16 19:15:57,299 | INFO     | app.github_client | get_compare_diff: 0 file(s) changed
+2026-08-16 19:15:57,300 | INFO     | app.agent.nodes | fetch_diff: got 0 changed file(s), diff length=0 chars
+2026-08-16 19:15:57,301 | INFO     | app.github_client | get_committer_email: SURYA1804/GH--600@145d1ec
+2026-08-16 19:15:59,480 | ERROR    | app.agent.graph | run_push_event: graph invocation failed for SURYA1804/GH--600 sha=145d1ec
+Traceback (most recent call last):
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\app\agent\graph.py", line 120, in run_push_event
+    await compiled.ainvoke(initial_state, config=config)
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langgraph\pregel\__init__.py", line 1613, in ainvoke
+    async for chunk in self.astream(
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langgraph\pregel\__init__.py", line 1502, in astream
+    async for _ in runner.atick(
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langgraph\pregel\runner.py", line 130, in atick
+    await arun_with_retry(t, retry_policy, stream=self.use_astream)
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langgraph\pregel\retry.py", line 102, in arun_with_retry
+    await task.proc.ainvoke(task.input, config)
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langgraph\utils\runnable.py", line 452, in ainvoke
+    input = await asyncio.create_task(coro, context=context)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langgraph\utils\runnable.py", line 235, in ainvoke
+    ret = await asyncio.create_task(coro, context=context)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\app\agent\nodes.py", line 71, in synthesize_changelog
+    llm = get_llm()
+          ^^^^^^^^^
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\app\agent\llm.py", line 15, in get_llm
+    _client = ChatNVIDIA(
+              ^^^^^^^^^^^
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langchain_nvidia_ai_endpoints\chat_models.py", line 310, in __init__
+    self._client = _NVIDIAClient(
+                   ^^^^^^^^^^^^^^
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langchain_nvidia_ai_endpoints\_common.py", line 220, in __init__
+    raise ValueError(
+ValueError: Model deepseek-ai/deepseek-v4-pro is unknown, check `available_models`
+2026-08-16 19:15:59,558 | ERROR    | app.main | [push] agent run FAILED | repo=SURYA1804/GH--600 delivery=2d6a48ae-9967-11f1-8088-f5d8f095955d
+Traceback (most recent call last):
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\app\main.py", line 40, in _run_push_event_logged
+    await run_push_event(graph, payload)
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\app\agent\graph.py", line 120, in run_push_event
+    await compiled.ainvoke(initial_state, config=config)
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langgraph\pregel\__init__.py", line 1613, in ainvoke
+    async for chunk in self.astream(
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langgraph\pregel\__init__.py", line 1502, in astream
+    async for _ in runner.atick(
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langgraph\pregel\runner.py", line 130, in atick
+    await arun_with_retry(t, retry_policy, stream=self.use_astream)
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langgraph\pregel\retry.py", line 102, in arun_with_retry
+    await task.proc.ainvoke(task.input, config)
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langgraph\utils\runnable.py", line 452, in ainvoke
+    input = await asyncio.create_task(coro, context=context)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langgraph\utils\runnable.py", line 235, in ainvoke
+    ret = await asyncio.create_task(coro, context=context)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\app\agent\nodes.py", line 71, in synthesize_changelog
+    llm = get_llm()
+          ^^^^^^^^^
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\app\agent\llm.py", line 15, in get_llm
+    _client = ChatNVIDIA(
+              ^^^^^^^^^^^
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langchain_nvidia_ai_endpoints\chat_models.py", line 310, in __init__
+    self._client = _NVIDIAClient(
+                   ^^^^^^^^^^^^^^
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langchain_nvidia_ai_endpoints\_common.py", line 220, in __init__
+    raise ValueError(
+ValueError: Model deepseek-ai/deepseek-v4-pro is unknown, check `available_models`
+2026-08-16 19:25:20,775 | INFO     | app.agent.graph | graph: workflow built with 6 nodes
+2026-08-19 21:36:38,504 | INFO     | app.agent.graph | graph: workflow built with 6 nodes
+2026-08-19 21:41:24,894 | INFO     | app.main | webhook received | event=push delivery=a01175a2-9be8-11f1-86e1-370d2eedb235
+2026-08-19 21:41:24,900 | INFO     | app.main | [push] starting agent run | repo=SURYA1804/GH--600 delivery=a01175a2-9be8-11f1-86e1-370d2eedb235
+2026-08-19 21:41:24,901 | INFO     | app.agent.graph | run_push_event: SURYA1804/GH--600 branch=main sha=535c537
+2026-08-19 21:41:24,911 | INFO     | app.agent.graph | run_push_event: invoking graph, thread_id=pr-SURYA1804-GH--600-535c537bc45c0cba08144a345317cfe1828018da
+2026-08-19 21:41:24,923 | INFO     | app.agent.nodes | fetch_diff: fetching SURYA1804/GH--600 main...535c537
+2026-08-19 21:41:24,923 | INFO     | app.github_client | get_compare_diff: SURYA1804/GH--600 main...535c537bc45c0cba08144a345317cfe1828018da
+2026-08-19 21:41:26,500 | INFO     | app.github_client | get_compare_diff: 0 file(s) changed
+2026-08-19 21:41:26,501 | INFO     | app.agent.nodes | fetch_diff: got 0 changed file(s), diff length=0 chars
+2026-08-19 21:41:26,502 | INFO     | app.github_client | get_committer_email: SURYA1804/GH--600@535c537
+2026-08-19 21:41:27,828 | INFO     | app.agent.nodes | synthesize_changelog: calling LLM (model=openai/gpt-oss-120b)
+2026-08-22 13:10:00,492 | INFO     | app.agent.graph | graph: workflow built with 6 nodes
+2026-08-22 13:13:24,169 | INFO     | app.main | webhook received | event=push delivery=a01175a2-9be8-11f1-86e1-370d2eedb235
+2026-08-22 13:13:24,173 | INFO     | app.main | [push] starting agent run | repo=SURYA1804/GH--600 delivery=a01175a2-9be8-11f1-86e1-370d2eedb235
+2026-08-22 13:13:24,175 | INFO     | app.agent.graph | run_push_event: SURYA1804/GH--600 branch=main sha=535c537
+2026-08-22 13:13:24,186 | INFO     | app.agent.graph | run_push_event: invoking graph, thread_id=pr-SURYA1804-GH--600-535c537bc45c0cba08144a345317cfe1828018da
+2026-08-22 13:13:24,308 | INFO     | app.agent.nodes | fetch_diff: fetching SURYA1804/GH--600 main...535c537
+2026-08-22 13:13:24,309 | INFO     | app.github_client | get_compare_diff: SURYA1804/GH--600 main...535c537bc45c0cba08144a345317cfe1828018da
+2026-08-22 13:13:26,693 | INFO     | app.github_client | get_compare_diff: 0 file(s) changed
+2026-08-22 13:13:26,694 | INFO     | app.agent.nodes | fetch_diff: got 0 changed file(s), diff length=0 chars
+2026-08-22 13:13:26,694 | INFO     | app.github_client | get_committer_email: SURYA1804/GH--600@535c537
+2026-08-22 13:13:27,652 | ERROR    | app.agent.graph | run_push_event: graph invocation failed for SURYA1804/GH--600 sha=535c537
+Traceback (most recent call last):
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\app\agent\graph.py", line 120, in run_push_event
+    await compiled.ainvoke(initial_state, config=config)
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langgraph\pregel\__init__.py", line 1613, in ainvoke
+    async for chunk in self.astream(
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langgraph\pregel\__init__.py", line 1502, in astream
+    async for _ in runner.atick(
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langgraph\pregel\runner.py", line 130, in atick
+    await arun_with_retry(t, retry_policy, stream=self.use_astream)
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langgraph\pregel\retry.py", line 102, in arun_with_retry
+    await task.proc.ainvoke(task.input, config)
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langgraph\utils\runnable.py", line 452, in ainvoke
+    input = await asyncio.create_task(coro, context=context)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langgraph\utils\runnable.py", line 235, in ainvoke
+    ret = await asyncio.create_task(coro, context=context)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\app\agent\nodes.py", line 71, in synthesize_changelog
+    llm = get_llm()
+          ^^^^^^^^^
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\app\agent\llm.py", line 14, in get_llm
+    if settings.USE_GROQ:
+       ^^^^^^^^^^^^^^^^^
+AttributeError: 'Settings' object has no attribute 'USE_GROQ'
+2026-08-22 13:13:27,731 | ERROR    | app.main | [push] agent run FAILED | repo=SURYA1804/GH--600 delivery=a01175a2-9be8-11f1-86e1-370d2eedb235
+Traceback (most recent call last):
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\app\main.py", line 40, in _run_push_event_logged
+    await run_push_event(graph, payload)
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\app\agent\graph.py", line 120, in run_push_event
+    await compiled.ainvoke(initial_state, config=config)
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langgraph\pregel\__init__.py", line 1613, in ainvoke
+    async for chunk in self.astream(
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langgraph\pregel\__init__.py", line 1502, in astream
+    async for _ in runner.atick(
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langgraph\pregel\runner.py", line 130, in atick
+    await arun_with_retry(t, retry_policy, stream=self.use_astream)
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langgraph\pregel\retry.py", line 102, in arun_with_retry
+    await task.proc.ainvoke(task.input, config)
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langgraph\utils\runnable.py", line 452, in ainvoke
+    input = await asyncio.create_task(coro, context=context)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langgraph\utils\runnable.py", line 235, in ainvoke
+    ret = await asyncio.create_task(coro, context=context)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\app\agent\nodes.py", line 71, in synthesize_changelog
+    llm = get_llm()
+          ^^^^^^^^^
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\app\agent\llm.py", line 14, in get_llm
+    if settings.USE_GROQ:
+       ^^^^^^^^^^^^^^^^^
+AttributeError: 'Settings' object has no attribute 'USE_GROQ'
+2026-08-22 13:14:38,401 | INFO     | app.agent.graph | graph: workflow built with 6 nodes
+2026-08-22 13:14:55,346 | INFO     | app.main | webhook received | event=push delivery=a01175a2-9be8-11f1-86e1-370d2eedb235
+2026-08-22 13:14:55,348 | INFO     | app.main | [push] starting agent run | repo=SURYA1804/GH--600 delivery=a01175a2-9be8-11f1-86e1-370d2eedb235
+2026-08-22 13:14:55,349 | INFO     | app.agent.graph | run_push_event: SURYA1804/GH--600 branch=main sha=535c537
+2026-08-22 13:14:55,353 | INFO     | app.agent.graph | run_push_event: invoking graph, thread_id=pr-SURYA1804-GH--600-535c537bc45c0cba08144a345317cfe1828018da
+2026-08-22 13:14:55,364 | INFO     | app.agent.nodes | fetch_diff: fetching SURYA1804/GH--600 main...535c537
+2026-08-22 13:14:55,365 | INFO     | app.github_client | get_compare_diff: SURYA1804/GH--600 main...535c537bc45c0cba08144a345317cfe1828018da
+2026-08-22 13:14:57,655 | INFO     | app.github_client | get_compare_diff: 0 file(s) changed
+2026-08-22 13:14:57,657 | INFO     | app.agent.nodes | fetch_diff: got 0 changed file(s), diff length=0 chars
+2026-08-22 13:14:57,657 | INFO     | app.github_client | get_committer_email: SURYA1804/GH--600@535c537
+2026-08-22 13:14:58,785 | ERROR    | app.agent.graph | run_push_event: graph invocation failed for SURYA1804/GH--600 sha=535c537
+Traceback (most recent call last):
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\app\agent\graph.py", line 120, in run_push_event
+    await compiled.ainvoke(initial_state, config=config)
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langgraph\pregel\__init__.py", line 1613, in ainvoke
+    async for chunk in self.astream(
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langgraph\pregel\__init__.py", line 1502, in astream
+    async for _ in runner.atick(
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langgraph\pregel\runner.py", line 130, in atick
+    await arun_with_retry(t, retry_policy, stream=self.use_astream)
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langgraph\pregel\retry.py", line 102, in arun_with_retry
+    await task.proc.ainvoke(task.input, config)
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langgraph\utils\runnable.py", line 452, in ainvoke
+    input = await asyncio.create_task(coro, context=context)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langgraph\utils\runnable.py", line 235, in ainvoke
+    ret = await asyncio.create_task(coro, context=context)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\app\agent\nodes.py", line 71, in synthesize_changelog
+    llm = get_llm()
+          ^^^^^^^^^
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\app\agent\llm.py", line 24, in get_llm
+    model=settings.NVIDIA_MODEL_NAME,
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Settings' object has no attribute 'NVIDIA_MODEL_NAME'
+2026-08-22 13:14:58,788 | ERROR    | app.main | [push] agent run FAILED | repo=SURYA1804/GH--600 delivery=a01175a2-9be8-11f1-86e1-370d2eedb235
+Traceback (most recent call last):
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\app\main.py", line 40, in _run_push_event_logged
+    await run_push_event(graph, payload)
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\app\agent\graph.py", line 120, in run_push_event
+    await compiled.ainvoke(initial_state, config=config)
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langgraph\pregel\__init__.py", line 1613, in ainvoke
+    async for chunk in self.astream(
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langgraph\pregel\__init__.py", line 1502, in astream
+    async for _ in runner.atick(
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langgraph\pregel\runner.py", line 130, in atick
+    await arun_with_retry(t, retry_policy, stream=self.use_astream)
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langgraph\pregel\retry.py", line 102, in arun_with_retry
+    await task.proc.ainvoke(task.input, config)
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langgraph\utils\runnable.py", line 452, in ainvoke
+    input = await asyncio.create_task(coro, context=context)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langgraph\utils\runnable.py", line 235, in ainvoke
+    ret = await asyncio.create_task(coro, context=context)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\app\agent\nodes.py", line 71, in synthesize_changelog
+    llm = get_llm()
+          ^^^^^^^^^
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\app\agent\llm.py", line 24, in get_llm
+    model=settings.NVIDIA_MODEL_NAME,
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Settings' object has no attribute 'NVIDIA_MODEL_NAME'
+2026-08-22 13:15:48,616 | INFO     | app.agent.graph | graph: workflow built with 6 nodes
+2026-08-22 13:16:04,014 | INFO     | app.main | webhook received | event=push delivery=a01175a2-9be8-11f1-86e1-370d2eedb235
+2026-08-22 13:16:04,016 | INFO     | app.main | [push] starting agent run | repo=SURYA1804/GH--600 delivery=a01175a2-9be8-11f1-86e1-370d2eedb235
+2026-08-22 13:16:04,016 | INFO     | app.agent.graph | run_push_event: SURYA1804/GH--600 branch=main sha=535c537
+2026-08-22 13:16:04,021 | INFO     | app.agent.graph | run_push_event: invoking graph, thread_id=pr-SURYA1804-GH--600-535c537bc45c0cba08144a345317cfe1828018da
+2026-08-22 13:16:04,033 | INFO     | app.agent.nodes | fetch_diff: fetching SURYA1804/GH--600 main...535c537
+2026-08-22 13:16:04,034 | INFO     | app.github_client | get_compare_diff: SURYA1804/GH--600 main...535c537bc45c0cba08144a345317cfe1828018da
+2026-08-22 13:16:06,159 | INFO     | app.github_client | get_compare_diff: 0 file(s) changed
+2026-08-22 13:16:06,160 | INFO     | app.agent.nodes | fetch_diff: got 0 changed file(s), diff length=0 chars
+2026-08-22 13:16:06,160 | INFO     | app.github_client | get_committer_email: SURYA1804/GH--600@535c537
+2026-08-22 13:16:07,453 | ERROR    | app.agent.graph | run_push_event: graph invocation failed for SURYA1804/GH--600 sha=535c537
+Traceback (most recent call last):
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\app\agent\graph.py", line 120, in run_push_event
+    await compiled.ainvoke(initial_state, config=config)
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langgraph\pregel\__init__.py", line 1613, in ainvoke
+    async for chunk in self.astream(
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langgraph\pregel\__init__.py", line 1502, in astream
+    async for _ in runner.atick(
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langgraph\pregel\runner.py", line 130, in atick
+    await arun_with_retry(t, retry_policy, stream=self.use_astream)
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langgraph\pregel\retry.py", line 102, in arun_with_retry
+    await task.proc.ainvoke(task.input, config)
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langgraph\utils\runnable.py", line 452, in ainvoke
+    input = await asyncio.create_task(coro, context=context)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langgraph\utils\runnable.py", line 235, in ainvoke
+    ret = await asyncio.create_task(coro, context=context)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\app\agent\nodes.py", line 86, in synthesize_changelog
+    logger.info(f"synthesize_changelog: calling LLM (model={settings.GROQ_MODEL_NAME})")
+                                                            ^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Settings' object has no attribute 'MODEL_NAME'
+2026-08-22 13:16:07,458 | ERROR    | app.main | [push] agent run FAILED | repo=SURYA1804/GH--600 delivery=a01175a2-9be8-11f1-86e1-370d2eedb235
+Traceback (most recent call last):
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\app\main.py", line 40, in _run_push_event_logged
+    await run_push_event(graph, payload)
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\app\agent\graph.py", line 120, in run_push_event
+    await compiled.ainvoke(initial_state, config=config)
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langgraph\pregel\__init__.py", line 1613, in ainvoke
+    async for chunk in self.astream(
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langgraph\pregel\__init__.py", line 1502, in astream
+    async for _ in runner.atick(
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langgraph\pregel\runner.py", line 130, in atick
+    await arun_with_retry(t, retry_policy, stream=self.use_astream)
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langgraph\pregel\retry.py", line 102, in arun_with_retry
+    await task.proc.ainvoke(task.input, config)
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langgraph\utils\runnable.py", line 452, in ainvoke
+    input = await asyncio.create_task(coro, context=context)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\my_venv\Lib\site-packages\langgraph\utils\runnable.py", line 235, in ainvoke
+    ret = await asyncio.create_task(coro, context=context)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\surya\LearningCode\Python\Github App - Auto Pull Request\Centralized-GitHub-App-Integration\app\agent\nodes.py", line 86, in synthesize_changelog
+    logger.info(f"synthesize_changelog: calling LLM (model={settings.GROQ_MODEL_NAME})")
+                                                            ^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Settings' object has no attribute 'MODEL_NAME'
+2026-08-22 13:17:20,936 | INFO     | app.agent.graph | graph: workflow built with 6 nodes
+2026-08-22 13:17:31,402 | INFO     | app.main | webhook received | event=push delivery=a01175a2-9be8-11f1-86e1-370d2eedb235
+2026-08-22 13:17:31,404 | INFO     | app.main | [push] starting agent run | repo=SURYA1804/GH--600 delivery=a01175a2-9be8-11f1-86e1-370d2eedb235
+2026-08-22 13:17:31,405 | INFO     | app.agent.graph | run_push_event: SURYA1804/GH--600 branch=main sha=535c537
+2026-08-22 13:17:31,410 | INFO     | app.agent.graph | run_push_event: invoking graph, thread_id=pr-SURYA1804-GH--600-535c537bc45c0cba08144a345317cfe1828018da
+2026-08-22 13:17:31,422 | INFO     | app.agent.nodes | fetch_diff: fetching SURYA1804/GH--600 main...535c537
+2026-08-22 13:17:31,423 | INFO     | app.github_client | get_compare_diff: SURYA1804/GH--600 main...535c537bc45c0cba08144a345317cfe1828018da
+2026-08-22 13:17:33,466 | INFO     | app.github_client | get_compare_diff: 0 file(s) changed
+2026-08-22 13:17:33,467 | INFO     | app.agent.nodes | fetch_diff: got 0 changed file(s), diff length=0 chars
+2026-08-22 13:17:33,468 | INFO     | app.github_client | get_committer_email: SURYA1804/GH--600@535c537
+2026-08-22 13:17:35,175 | INFO     | app.agent.nodes | synthesize_changelog: calling LLM (model=openai/gpt-oss-120b)

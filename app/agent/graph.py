@@ -9,6 +9,7 @@ from langgraph.graph import StateGraph, START, END
 from langgraph.checkpoint.sqlite.aio import AsyncSqliteSaver
 
 from app.config import settings
+from app.logging_config import get_logger
 from app.github_client import get_review_comments
 from app.agent.nodes import (
     fetch_diff,
@@ -18,6 +19,8 @@ from app.agent.nodes import (
     push_feedback_update,
     notify_email,
 )
+
+logger = get_logger(__name__)
 
 
 class AgentState(TypedDict, total=False):
@@ -40,7 +43,9 @@ class AgentState(TypedDict, total=False):
 def _route_after_readme(state: AgentState) -> str:
     """First run creates a new PR; a feedback re-run updates the existing one."""
     if state.get("pr_number"):
+        logger.info(f"routing: pr_number={state['pr_number']} present -> push_feedback_update")
         return "push_feedback_update"
+    logger.info("routing: no pr_number in state -> create_branch_and_pr")
     return "create_branch_and_pr"
 
 
@@ -68,6 +73,8 @@ def _build_workflow() -> StateGraph:
     workflow.add_edge("create_branch_and_pr", "notify_email")
     workflow.add_edge("push_feedback_update", "notify_email")
     workflow.add_edge("notify_email", END)
+
+    logger.info("graph: workflow built with 6 nodes")
     return workflow
 
 
@@ -95,6 +102,8 @@ async def run_push_event(graph, payload: dict):
     ref = payload["ref"]  # e.g. "refs/heads/main"
     base_branch = ref.replace("refs/heads/", "")
 
+    logger.info(f"run_push_event: {owner}/{repo} branch={base_branch} sha={head_sha[:7]}")
+
     initial_state: AgentState = {
         "installation_id": installation_id,
         "owner": owner,
@@ -103,16 +112,23 @@ async def run_push_event(graph, payload: dict):
         "head_sha": head_sha,
     }
 
-    async with AsyncSqliteSaver.from_conn_string(settings.CHECKPOINT_DB_PATH) as checkpointer:
-        compiled = graph.compile(checkpointer=checkpointer)
-        config = _thread_config(owner, repo, pr_number=None, head_sha=head_sha)
-        await compiled.ainvoke(initial_state, config=config)
+    try:
+        async with AsyncSqliteSaver.from_conn_string(settings.CHECKPOINT_DB_PATH) as checkpointer:
+            compiled = graph.compile(checkpointer=checkpointer)
+            config = _thread_config(owner, repo, pr_number=None, head_sha=head_sha)
+            logger.info(f"run_push_event: invoking graph, thread_id={config['configurable']['thread_id']}")
+            await compiled.ainvoke(initial_state, config=config)
+        logger.info(f"run_push_event: completed for {owner}/{repo} sha={head_sha[:7]}")
+    except Exception:
+        logger.exception(f"run_push_event: graph invocation failed for {owner}/{repo} sha={head_sha[:7]}")
+        raise
 
 
 async def run_review_event(graph, payload: dict):
     """Entry point for a `pull_request_review` webhook."""
     review = payload["review"]
     if review["state"] != "changes_requested":
+        logger.info(f"run_review_event: review state='{review['state']}', no action taken")
         return  # approvals are handled by notify_email already having run; extend here if needed
 
     repo_full = payload["repository"]["full_name"]
@@ -121,20 +137,37 @@ async def run_review_event(graph, payload: dict):
     pr_number = payload["pull_request"]["number"]
     head_sha = payload["pull_request"]["head"]["sha"]
 
-    feedback = await get_review_comments(installation_id, owner, repo, pr_number)
+    logger.info(f"run_review_event: changes requested on {owner}/{repo} PR #{pr_number}")
 
-    async with AsyncSqliteSaver.from_conn_string(settings.CHECKPOINT_DB_PATH) as checkpointer:
-        compiled = graph.compile(checkpointer=checkpointer)
-        config = _thread_config(owner, repo, pr_number=pr_number, head_sha=head_sha)
+    try:
+        feedback = await get_review_comments(installation_id, owner, repo, pr_number)
+    except Exception:
+        logger.exception(f"run_review_event: get_review_comments failed for PR #{pr_number}")
+        raise
+    logger.info(f"run_review_event: fetched {len(feedback)} feedback item(s)")
 
-        current = await compiled.aget_state(config)
-        retry_count = (current.values or {}).get("retry_count", 0)
-        if retry_count >= settings.MAX_FEEDBACK_RETRIES:
-            # Stop auto-looping; a human needs to take it from here.
-            return
+    try:
+        async with AsyncSqliteSaver.from_conn_string(settings.CHECKPOINT_DB_PATH) as checkpointer:
+            compiled = graph.compile(checkpointer=checkpointer)
+            config = _thread_config(owner, repo, pr_number=pr_number, head_sha=head_sha)
 
-        # Merge feedback + known PR number into the persisted state, then re-run from START.
-        # fetch_diff will see the cached diff and skip re-fetching; generate_readme_patch's
-        # routing sees pr_number is set and takes the update path instead of creating a new PR.
-        await compiled.aupdate_state(config, {"review_feedback": feedback, "pr_number": pr_number})
-        await compiled.ainvoke(None, config=config)
+            current = await compiled.aget_state(config)
+            retry_count = (current.values or {}).get("retry_count", 0)
+            if retry_count >= settings.MAX_FEEDBACK_RETRIES:
+                logger.warning(
+                    f"run_review_event: PR #{pr_number} hit max retries "
+                    f"({retry_count}/{settings.MAX_FEEDBACK_RETRIES}), stopping auto-loop"
+                )
+                return
+
+            # Merge feedback + known PR number into the persisted state, then re-run from START.
+            # fetch_diff will see the cached diff and skip re-fetching; generate_readme_patch's
+            # routing sees pr_number is set and takes the update path instead of creating a new PR.
+            logger.info(f"run_review_event: resuming thread_id={config['configurable']['thread_id']} "
+                        f"(retry {retry_count + 1}/{settings.MAX_FEEDBACK_RETRIES})")
+            await compiled.aupdate_state(config, {"review_feedback": feedback, "pr_number": pr_number})
+            await compiled.ainvoke(None, config=config)
+        logger.info(f"run_review_event: completed for PR #{pr_number}")
+    except Exception:
+        logger.exception(f"run_review_event: graph invocation failed for PR #{pr_number}")
+        raise
