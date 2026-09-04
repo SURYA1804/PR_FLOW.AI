@@ -77,6 +77,24 @@ async def webhook(request: Request, background_tasks: BackgroundTasks):
     payload["_delivery_id"] = delivery_id  # threaded through for log correlation
 
     if event_type == "push":
+        ref = payload.get("ref", "")
+        branch = ref.replace("refs/heads/", "")
+        sender_type = payload.get("sender", {}).get("type", "")
+
+        if branch.startswith("ai-changelog/"):
+            # Critical guard: without this, every commit the bot pushes to its own
+            # ai-changelog/* branch fires ANOTHER push webhook, which the agent
+            # would process as a new change, creating a fresh branch off of it,
+            # which pushes again — an infinite self-triggering loop.
+            logger.info(f"push to bot-generated branch '{branch}' ignored | delivery={delivery_id}")
+            return {"status": "ignored: bot-generated branch"}
+
+        if sender_type == "Bot":
+            # Defense in depth: even on a branch that doesn't match the naming
+            # convention, never react to a push made by a Bot identity (i.e. us).
+            logger.info(f"push from Bot sender ignored | delivery={delivery_id}")
+            return {"status": "ignored: bot sender"}
+
         background_tasks.add_task(_run_push_event_logged, graph, payload)
     elif event_type == "pull_request_review":
         background_tasks.add_task(_run_review_event_logged, graph, payload)

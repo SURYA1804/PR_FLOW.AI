@@ -16,5 +16,5 @@ checkpoints.sqlite
 # IDE
 .vscode/
 .idea/
-
+logs/
 *.pem

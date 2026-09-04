@@ -37,6 +37,59 @@ async def get_compare_diff(installation_id: int, owner: str, repo: str, base: st
         return data
 
 
+async def get_single_commit_diff(installation_id: int, owner: str, repo: str, sha: str) -> dict:
+    """
+    Used for the very first commit on a branch, where `before` from the push
+    payload is all zeros and there's no valid base to compare against.
+    Returns the same 'files' shape as get_compare_diff for a drop-in fit.
+    """
+    logger.info(f"get_single_commit_diff: {owner}/{repo}@{sha}")
+    token = await get_installation_token(installation_id)
+    async with httpx.AsyncClient() as client:
+        resp = await client.get(
+            f"{GITHUB_API}/repos/{owner}/{repo}/commits/{sha}",
+            headers=_headers(token),
+        )
+        if resp.status_code >= 400:
+            logger.error(f"get_single_commit_diff: {resp.status_code} {resp.text[:500]}")
+        resp.raise_for_status()
+        data = resp.json()
+        logger.info(f"get_single_commit_diff: {len(data.get('files', []))} file(s) changed")
+        return data
+
+async def get_open_pull_request(
+    installation_id: int, owner: str, repo: str, head_branch: str, base_branch: str,
+) -> dict | None:
+    """Returns the existing open PR for this branch, or None if none exists."""
+    logger.info(f"get_open_pull_request: {owner}/{repo} head={head_branch} base={base_branch}")
+    token = await get_installation_token(installation_id)
+    async with httpx.AsyncClient() as client:
+        resp = await client.get(
+            f"{GITHUB_API}/repos/{owner}/{repo}/pulls",
+            headers=_headers(token),
+            params={"head": f"{owner}:{head_branch}", "base": base_branch, "state": "open"},
+        )
+        if resp.status_code >= 400:
+            logger.error(f"get_open_pull_request: {resp.status_code} {resp.text[:500]}")
+        resp.raise_for_status()
+        results = resp.json()
+        return results[0] if results else None
+
+async def is_pr_open(installation_id: int, owner: str, repo: str, pr_number: int) -> bool:
+    """Returns True if the PR is still open (not merged, not closed)."""
+    logger.info(f"is_pr_open: {owner}/{repo} PR #{pr_number}")
+    token = await get_installation_token(installation_id)
+    async with httpx.AsyncClient() as client:
+        resp = await client.get(
+            f"{GITHUB_API}/repos/{owner}/{repo}/pulls/{pr_number}",
+            headers=_headers(token),
+        )
+        if resp.status_code >= 400:
+            logger.error(f"is_pr_open: {resp.status_code} {resp.text[:500]}")
+        resp.raise_for_status()
+        data = resp.json()
+        return data.get("state") == "open"
+       
 async def get_file_content(installation_id: int, owner: str, repo: str, path: str, ref: str) -> tuple[str, str]:
     """Returns (decoded_content, sha) for a file, or ("", None) if it doesn't exist yet."""
     logger.info(f"get_file_content: {owner}/{repo}/{path}@{ref}")
@@ -77,7 +130,6 @@ async def create_branch(installation_id: int, owner: str, repo: str, new_branch:
             headers=_headers(token),
             json={"ref": f"refs/heads/{new_branch}", "sha": base_sha},
         )
-        # 422 = branch already exists, which is fine on a re-run
         if create_resp.status_code == 422:
             logger.info(f"create_branch: '{new_branch}' already exists, continuing")
         elif create_resp.status_code not in (201, 422):

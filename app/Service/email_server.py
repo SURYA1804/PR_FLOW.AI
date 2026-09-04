@@ -31,7 +31,7 @@ async def send_email(to: str, subject: str, body: str):
         server.login(settings.SMTP_USER, settings.SMTP_PASSWORD)
         server.send_message(msg)
 
-    return {"status": "sent", "to": req.to}
+    return {"status": "sent", "to": to}
 
 
 
