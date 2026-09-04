@@ -46,7 +46,6 @@ class Settings:
     USE_GROQ: bool = os.environ.get("USE_GROQ", "false").lower() == "true"
 
     # --- Email MCP ---
-    EMAIL_MCP_URL: str = os.environ.get("EMAIL_MCP_URL", "http://localhost:8100")
     SMTP_HOST: str = os.environ.get("SMTP_HOST", "")
     SMTP_PORT: int = int(os.environ.get("SMTP_PORT", "587"))
     SMTP_USER: str = os.environ.get("SMTP_USER", "")
